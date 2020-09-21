@@ -74,6 +74,11 @@ class Parameters:
     def __init__(self, params: List[float]):
         self.params = params
 
+    def __eq__(self, other: Any) -> Any:
+        if isinstance(other, Parameters):
+            return self.params == other.params
+        return False
+
 
 @dataclass
 class Adam:
@@ -170,12 +175,12 @@ class Compose:
 
 
 class Tree:
-    value: int
+    value: Any
     left: Optional["Tree"] = None
     right: Optional["Tree"] = None
 
     def __init__(
-        self, value: int, left: Optional["Tree"] = None, right: Optional["Tree"] = None
+        self, value: Any, left: Optional["Tree"] = None, right: Optional["Tree"] = None
     ) -> None:
         self.value = value
         self.left = left
@@ -198,13 +203,17 @@ class Tree:
 
 class Mapping:
     dict: Optional[Dict[str, "Mapping"]] = None
+    value: Any = None
 
-    def __init__(self, dictionary: Optional[Dict[str, "Mapping"]] = None) -> None:
+    def __init__(
+        self, value: Any = None, dictionary: Optional[Dict[str, "Mapping"]] = None
+    ) -> None:
         self.dictionary = dictionary
+        self.value = value
 
     def __eq__(self, other: Any) -> Any:
         if isinstance(other, type(self)):
-            return self.dictionary == other.dictionary
+            return self.dictionary == other.dictionary and self.value == other.value
         else:
             return False
 
@@ -241,7 +250,7 @@ class TreeConf:
     _target_: str = "tests.Tree"
     left: Optional["TreeConf"] = None
     right: Optional["TreeConf"] = None
-    value: int = MISSING
+    value: Any = MISSING
 
 
 @dataclass
