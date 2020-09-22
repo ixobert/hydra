@@ -601,7 +601,7 @@ def _get_kwargs(
         with flag_override(params, "allow_objects", True):
             params.merge_with(overrides)
 
-    for k, v in params.items_ex(resolve=False):
+    for k, v in params.items():
         if k == "_target_":
             continue
         final_kwargs[k] = v
